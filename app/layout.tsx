@@ -41,11 +41,15 @@ export default function RootLayout({
       )}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
-        {/* <ClerkProvider>
-          <header className="flex h-16 items-center justify-end gap-4 p-4">
+        <ClerkProvider>
+          <ThemeProvider></ThemeProvider>
+          {/* <header className="flex h-16 items-center justify-end gap-4 p-4">
             <Show when="signed-out">
-              <SignInButton />
+              <SignInButton>
+                <button className="h-10 cursor-pointer rounded-full bg-[#6c47ff] px-4 text-sm font-medium text-white sm:h-12 sm:px-5 sm:text-base">
+                  Sign In
+                </button>
+              </SignInButton>
               <SignUpButton>
                 <button className="h-10 cursor-pointer rounded-full bg-[#6c47ff] px-4 text-sm font-medium text-white sm:h-12 sm:px-5 sm:text-base">
                   Sign Up
@@ -55,9 +59,9 @@ export default function RootLayout({
             <Show when="signed-in">
               <UserButton />
             </Show>
-          </header>
+          </header> */}
           {children}
-        </ClerkProvider> */}
+        </ClerkProvider>
       </body>
     </html>
   )
