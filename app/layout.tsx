@@ -42,7 +42,6 @@ export default function RootLayout({
     >
       <body>
         <ClerkProvider>
-          <ThemeProvider></ThemeProvider>
           {/* <header className="flex h-16 items-center justify-end gap-4 p-4">
             <Show when="signed-out">
               <SignInButton>
