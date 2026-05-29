@@ -1,7 +1,15 @@
-export default function Page() {
+import { TextTrackingIcon } from "@hugeicons/core-free-icons"
+import { auth } from "@clerk/nextjs/server"
+import { elevenlabs } from "@/lib/elevenlabs"
+export default async function Page() {
+  const { userId } = await auth()
+  const voicesRes = await elevenlabs.voices.getAll()
+  const voices = voicesRes.voices
+  //voices
+
   return (
-    <div className="flex flex-1 items-center justify-center">
-      <h1>Text to Speech</h1>
-    </div>
+    <main className="flex min-h-screen flex-col items-center overflow-y-hidden">
+      <TextToSpeech />
+    </main>
   )
 }
