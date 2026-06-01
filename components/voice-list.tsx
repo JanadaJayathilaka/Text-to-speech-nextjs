@@ -8,6 +8,8 @@ import {
 } from "./ui/select"
 import { useRef, useState } from "react"
 import { useTTSStore } from "@/store/use-tts-store"
+import { Button } from "./ui/button"
+import { PauseIcon, PlayIcon } from "lucide-react"
 
 export function VoiceList({ voices }: { voices: Voice[] }) {
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -29,7 +31,15 @@ export function VoiceList({ voices }: { voices: Voice[] }) {
     }
   }
 
-  const handlePause = () => {}
+  const handlePause = () => {
+    if (!audioRef.current) return
+
+    if (isPlaying) {
+      audioRef.current.pause()
+    } else {
+      audioRef.current.play()
+    }
+  }
   return (
     <div className="flex items-center gap-4">
       <Select>
@@ -45,7 +55,23 @@ export function VoiceList({ voices }: { voices: Voice[] }) {
         </SelectContent>
       </Select>
 
-      {}
+      {selectedVoice && (
+        <div>
+          <Button onClick={handlePause} type="button" size="icon">
+            {isPlaying ? (
+              <PauseIcon className="size-5" />
+            ) : (
+              <PlayIcon className="size-5" />
+            )}
+          </Button>
+
+          <audio
+            ref={audioRef}
+            onEnded={() => setIsPlaying(false)}
+            src={selectedVoice.preview_url}
+          />
+        </div>
+      )}
     </div>
   )
 }

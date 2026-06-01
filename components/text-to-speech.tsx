@@ -2,11 +2,52 @@
 import { Voice } from "elevenlabs/api"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "./ui/label"
+import { VoiceList } from "./voice-list"
+import { Loader2Icon, SparklesIcon } from "lucide-react"
+import { Button } from "./ui/button"
+import { useTTSStore } from "@/store/use-tts-store"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import axios from "axios"
 interface Props {
-  voice: Voice[]
+  voices: Voice[]
 }
 
-export function TextToSpeech({ voice }: Props) {
+export function TextToSpeech({ voices }: Props) {
+  const router = useRouter()
+  const { setText, setVoice, text, voice } = useTTSStore()
+
+  const [audioUrl, setAudioUrl] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!text || !voice) return
+
+    setIsLoading(true)
+    setAudioUrl(null)
+
+    try {
+      const res = await axios.post(
+        "/api/generate",
+        {
+          text,
+          voice,
+        },
+        {
+          responseType: "blob",
+        }
+      )
+      router.refresh()
+
+      const audioBlob = res.data
+      const url = URL.createObjectURL(audioBlob)
+      setAudioUrl(url)
+    } catch (error) {
+      console.error("Error generating speech:", error)
+    }
+  }
+
   return (
     <div className="mx-auto w-full max-w-7xl">
       <form onSubmit={handleSubmit} className="flex gap-4">
@@ -18,8 +59,26 @@ export function TextToSpeech({ voice }: Props) {
         <div className="m flex w-1/2 flex-col gap-4 border p-4 md:p-8">
           <div className="space-y-2">
             <Label>Voices</Label>
-            <VoiceList />
+            <VoiceList voices={voices} />
           </div>
+          <Button type="submit" disabled={isLoading || !text || !voice}>
+            {isLoading ? (
+              <div className="flex items-center space-x-3">
+                <span>Generating Speech</span>
+                <Loader2Icon className="size-5 animate-spin" />
+              </div>
+            ) : (
+              <div className="flex items-center space-x-3">
+                <span>Generate speech</span>
+                <SparklesIcon className="size-5" />
+              </div>
+            )}
+          </Button>
+          {audioUrl && (
+            <div>
+              <audio controls src={audioUrl} />
+            </div>
+          )}
         </div>
       </form>
     </div>
