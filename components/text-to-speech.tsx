@@ -45,6 +45,19 @@ export function TextToSpeech({ voices }: Props) {
       setAudioUrl(url)
     } catch (error) {
       console.error("Error generating speech:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleDownload = () => {
+    if (audioUrl) {
+      const a = document.createElement("a")
+      a.href = audioUrl
+      a.download = "speech.mp3"
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
     }
   }
 
