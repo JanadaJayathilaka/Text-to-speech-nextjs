@@ -1,9 +1,9 @@
-'use client"'
+"use client"
 import { Voice } from "elevenlabs/api"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "./ui/label"
 import { VoiceList } from "./voice-list"
-import { Loader2Icon, SparklesIcon } from "lucide-react"
+import { DownloadIcon, Loader2Icon, SparklesIcon } from "lucide-react"
 import { Button } from "./ui/button"
 import { useTTSStore } from "@/store/use-tts-store"
 import { useRouter } from "next/navigation"
@@ -57,7 +57,6 @@ export function TextToSpeech({ voices }: Props) {
       a.download = "speech.mp3"
       document.body.appendChild(a)
       a.click()
-      document.body.removeChild(a)
     }
   }
 
@@ -66,6 +65,9 @@ export function TextToSpeech({ voices }: Props) {
       <form onSubmit={handleSubmit} className="flex gap-4">
         <Textarea
           maxLength={5000}
+          name="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
           placeholder="Enter text to convert to speech..."
           className="resize-none border-none p-4 shadow-none outline-none focus-visible:ring-0 focus-visible:ring-transparent md:p-8"
         />
@@ -88,8 +90,13 @@ export function TextToSpeech({ voices }: Props) {
             )}
           </Button>
           {audioUrl && (
-            <div>
-              <audio controls src={audioUrl} />
+            <div className="mt-8 flex items-center space-x-3">
+              <audio controls className="w-full">
+                <source src={audioUrl} type="audio/mpeg" />
+              </audio>
+              <Button onClick={handleDownload} size="icon">
+                <DownloadIcon className="size-5" />
+              </Button>
             </div>
           )}
         </div>

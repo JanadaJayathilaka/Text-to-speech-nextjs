@@ -42,7 +42,7 @@ export function VoiceList({ voices }: { voices: Voice[] }) {
   }
   return (
     <div className="flex items-center gap-4">
-      <Select>
+      <Select onValueChange={handleVoiceSelect}>
         <SelectTrigger>
           <SelectValue placeholder="Select a voice" />
         </SelectTrigger>
