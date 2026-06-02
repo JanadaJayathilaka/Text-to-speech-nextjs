@@ -8,12 +8,34 @@ import { Button } from "./ui/button"
 import { useTTSStore } from "@/store/use-tts-store"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { handleDownloadAudioFiles } from "@/app/app/actions"
 import axios from "axios"
 interface Props {
   voices: Voice[]
 }
 
-export function TextToSpeech({ voices }: Props) {
+export default function TextToSpeech({
+  voices,
+  history,
+}: {
+  voices: Voice[]
+  history: {
+    text: string | null
+    name: string
+    id: string
+    audioId: string
+    clerkId: string
+    bucketId: string
+    permissions: string[]
+    signature: string
+    mimeType: string
+    sizeOriginal: number
+    chunksTotal: number
+    chunksUploaded: number
+    createAt: Date
+    updatedAt: Date
+  }[]
+}) {
   const router = useRouter()
   const { setText, setVoice, text, voice } = useTTSStore()
 
@@ -59,6 +81,10 @@ export function TextToSpeech({ voices }: Props) {
       a.click()
     }
   }
+  async function handleDownloadFromHistory(id: string) {
+    const linkAudio = await handleDownloadAudioFiles(id)
+    window.open(linkAudio, "_blank")
+  }
 
   return (
     <div className="mx-auto w-full max-w-7xl">
@@ -99,6 +125,32 @@ export function TextToSpeech({ voices }: Props) {
               </Button>
             </div>
           )}
+
+          <div className="flex flex-col space-y-2">
+            <Label>History</Label>
+            <div className="flex flex-col space-y-3">
+              {history.length > 0 ? (
+                history.map((audio, i) => (
+                  <div className="items-center justify-start gap-4 space-x-3">
+                    <span className="truncate text-sm" key={i}>
+                      {audio.text}
+                    </span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="cursor-pointer rounded-full border border-muted bg-transparent"
+                      onClick={() => handleDownloadFromHistory(audio.audioId)}
+                      size="icon"
+                    >
+                      <DownloadIcon className="size-5" />
+                    </Button>
+                  </div>
+                ))
+              ) : (
+                <span className="truncate text-xs">No audios...</span>
+              )}
+            </div>
+          </div>
         </div>
       </form>
     </div>
