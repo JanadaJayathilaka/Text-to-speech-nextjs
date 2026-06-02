@@ -13,6 +13,9 @@ import {
 import { AudioLines, Mic, MicVocal } from "lucide-react"
 import { currentUser } from "@clerk/nextjs/server"
 import UserAccount from "./user-account"
+import { getUserSubscriptionPlan } from "@/lib/stripe"
+import { auth } from "@clerk/nextjs/server"
+import { getApiLimitCount } from "@/lib/api-limit"
 
 const routes = [
   {
@@ -36,6 +39,11 @@ const routes = [
 ]
 export async function AppSidebar() {
   const user = await currentUser()
+  const { userId } = await auth()
+
+  const apiLimitCount = await getApiLimitCount(userId!)
+
+  const subscriptionPlan = await getUserSubscriptionPlan(userId!)
   return (
     <Sidebar>
       <SidebarHeader>
