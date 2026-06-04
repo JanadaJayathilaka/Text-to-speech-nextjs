@@ -15,7 +15,8 @@ import { currentUser } from "@clerk/nextjs/server"
 import UserAccount from "./user-account"
 import { getUserSubscriptionPlan } from "@/lib/stripe"
 import { auth } from "@clerk/nextjs/server"
-import { getApiLimitCount } from "@/lib/api-limit"
+import { getApiLimitCount, getApiMaxLimitCount } from "@/lib/api-limit"
+import { checkSubscriptionPremium } from "@/lib/subscriptions"
 
 const routes = [
   {
@@ -44,6 +45,10 @@ export async function AppSidebar() {
   const apiLimitCount = await getApiLimitCount(userId!)
 
   const subscriptionPlan = await getUserSubscriptionPlan(userId!)
+
+  const isPremium = await checkSubscriptionPremium(userId!)
+
+  const maxLimitCount = await getApiMaxLimitCount(userId!)
   return (
     <Sidebar>
       <SidebarHeader>
@@ -86,7 +91,13 @@ export async function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem>{/* <FreeCounter/> */}</SidebarMenuItem>
+          <SidebarMenuItem>
+            <Counter
+              maxLimitCount={maxLimitCount}
+              apiLimitCount={apiLimitCount}
+              isPremium={isPremium}
+            />
+          </SidebarMenuItem>
           <SidebarMenuItem>
             {user && (
               <UserAccount
