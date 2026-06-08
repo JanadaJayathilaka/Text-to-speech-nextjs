@@ -131,7 +131,10 @@ export default function TextToSpeech({
             <div className="flex flex-col space-y-3">
               {history.length > 0 ? (
                 history.map((audio, i) => (
-                  <div className="items-center justify-start gap-4 space-x-3">
+                  <div
+                    className="items-center justify-start gap-4 space-x-3"
+                    key={i}
+                  >
                     <span className="truncate text-sm" key={i}>
                       {audio.text}
                     </span>
