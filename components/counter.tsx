@@ -1,7 +1,12 @@
 "use client"
 
+import { Sparkles } from "lucide-react"
+import { CreditsRemaining } from "./credits-remaining"
+import { Button } from "./ui/button"
 import { Card, CardContent } from "./ui/card"
-
+import { useToast } from "@/hooks/use-toast"
+import { useEffect, useState } from "react"
+import { createStripeSession } from "@/app/app/actions"
 interface Props {
   maxLimitCount: number
   apiLimitCount: number
@@ -13,6 +18,26 @@ export function Counter({
   apiLimitCount = 0,
   isPremium = false,
 }: Props) {
+  const { toast } = useToast()
+  const [mounted, setMounted] = useState(false)
+  const [isLaoding, setIsLoading] = useState(false)
+
+  const handleCreateStripeSession = async () => {
+    setIsLoading(true)
+    const { url, error } = await createStripeSession()
+
+    if (error) {
+      toast.error(error)
+      setIsLoading(false)
+      return
+    }
+    setIsLoading(false)
+    window.location.href = url ?? "/app/billing"
+  }
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   return (
     <div>
       <Card className="border-0 bg-white/10 p-0 shadow-none">
@@ -23,6 +48,19 @@ export function Counter({
               maxCredits={maxLimitCount}
             />
           </div>
+          {!isPremium && (
+            <Button
+              disabled={isLaoding}
+              onClick={(e) => {
+                e.preventDefault()
+                handleCreateStripeSession()
+              }}
+              className="w-full"
+            >
+              <Sparkles />
+              Upgrade to Pro
+            </Button>
+          )}
         </CardContent>
       </Card>
     </div>

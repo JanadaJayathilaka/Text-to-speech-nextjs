@@ -17,6 +17,7 @@ import { getUserSubscriptionPlan } from "@/lib/stripe"
 import { auth } from "@clerk/nextjs/server"
 import { getApiLimitCount, getApiMaxLimitCount } from "@/lib/api-limit"
 import { checkSubscriptionPremium } from "@/lib/subscriptions"
+import { Counter } from "./counter"
 
 const routes = [
   {
@@ -101,6 +102,7 @@ export async function AppSidebar() {
           <SidebarMenuItem>
             {user && (
               <UserAccount
+                isPremium={isPremium}
                 user={{
                   name: user?.firstName || "User",
                   email: user?.emailAddresses[0]?.emailAddress || "",

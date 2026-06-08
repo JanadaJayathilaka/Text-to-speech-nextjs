@@ -1,3 +1,5 @@
+import { CircularProgress } from "@/components/circular-progress"
+
 export function CreditsRemaining({
   credits,
   maxCredits,
@@ -5,5 +7,12 @@ export function CreditsRemaining({
   credits: number
   maxCredits: number
 }) {
-  return <div></div>
+  return (
+    <div className="flex items-center gap-2 text-muted-foreground">
+      <CircularProgress value={credits} maxValue={maxCredits} />
+      <span className="text-sm">
+        {credits.toLocaleString()} credits remaining
+      </span>
+    </div>
+  )
 }

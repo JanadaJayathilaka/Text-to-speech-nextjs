@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from "uuid"
 import { Client, Storage } from "appwrite"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@clerk/nextjs/server"
+import { checkApiLimit, incrementApiLimit } from "@/lib/api-limit"
+import { checkSubscriptionPremium } from "@/lib/subscriptions"
 // import { checkApiLimit, incrementApiLimit } from "@/lib/api-limit"
 // import { checkSubscriptionPremium } from "@/lib/subscription"
 
@@ -68,6 +70,15 @@ export async function POST(req: Request) {
     // }
     console.log("RESULT", result)
     const clerkId = userId
+    const trials = await checkApiLimit(userId)
+    const isPremium = await checkSubscriptionPremium(userId)
+
+    if (!trials && !isPremium) {
+      return new NextResponse(
+        "Free trial has expired. Please upgrade to pro.",
+        { status: 403 }
+      )
+    }
 
     const newAudio = await prisma.audio.create({
       data: {
@@ -84,6 +95,7 @@ export async function POST(req: Request) {
         clerkId,
       },
     })
+    await incrementApiLimit(clerkId, text.length)
 
     // await incrementApiLimit(clerkId, text.length)
     return new NextResponse(new Uint8Array(audioBuffer), {
