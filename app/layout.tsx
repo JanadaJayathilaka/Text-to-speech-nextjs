@@ -10,6 +10,7 @@ import {
   SignUpButton,
   UserButton,
 } from "@clerk/nextjs"
+import { Toaster } from "@/components/ui/sonner"
 
 const notoSerifHeading = Noto_Serif({
   subsets: ["latin"],
@@ -59,6 +60,7 @@ export default function RootLayout({
               <UserButton />
             </Show>
           </header> */}
+          <Toaster />
           {children}
         </ClerkProvider>
       </body>
