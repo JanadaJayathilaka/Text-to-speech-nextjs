@@ -20,7 +20,7 @@ export function Counter({
 }: Props) {
   const { toast } = useToast()
   const [mounted, setMounted] = useState(false)
-  const [isLaoding, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleCreateStripeSession = async () => {
     setIsLoading(true)
@@ -50,7 +50,7 @@ export function Counter({
           </div>
           {!isPremium && (
             <Button
-              disabled={isLaoding}
+              disabled={isLoading}
               onClick={(e) => {
                 e.preventDefault()
                 handleCreateStripeSession()

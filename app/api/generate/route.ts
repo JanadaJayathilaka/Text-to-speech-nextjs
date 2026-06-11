@@ -59,15 +59,6 @@ export async function POST(req: Request) {
       audioFile
     )
 
-    // const trials = await checkApiLimit(userId)
-    // const isPremium = await checkSubscriptionPremium(userId)
-
-    // if (!trials && !isPremium) {
-    //   return new NextResponse(
-    //     "Free trial has expired. Please upgrade to pro.",
-    //     { status: 403 }
-    //   )
-    // }
     console.log("RESULT", result)
     const clerkId = userId
     const trials = await checkApiLimit(userId)

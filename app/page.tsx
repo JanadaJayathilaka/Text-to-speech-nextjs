@@ -19,13 +19,6 @@ export default function Page() {
               <span className="backdrop absolute inset-[1px] rounded-full bg-neutral-950 transition-colors duration-200 group-hover:bg-neutral-900" />
               <span className="absolute inset-x-0 bottom-0 h-full w-full bg-gradient-to-tr from-primary/40 blur-md"></span>
               <span className="z-10 flex items-center justify-center gap-1.5 py-0.5 text-sm text-neutral-100">
-                <Image
-                  src="/icons/sparkles-dark.svg"
-                  alt="Sparkles Icon"
-                  width={24}
-                  height={24}
-                  className="h-4 w-4"
-                />
                 Introducing Text2SpeechAI
                 <ChevronRight className="h-4 w-4" />
               </span>
@@ -39,7 +32,7 @@ export default function Page() {
               more
             </p>
 
-            <RetroGrid/>
+            <RetroGrid />
           </div>
         </div>
       </AnimatedContainer>
