@@ -26,6 +26,7 @@ import { PLANS } from "@/config/stripe"
 import { cn } from "@/lib/utils"
 import { UpgradeButton } from "@/components/upgrade-button"
 import { useUser } from "@clerk/nextjs"
+import { LampContainer } from "@/components/lamp-container"
 export default function Page() {
   const { user } = useUser()
   return (
@@ -233,6 +234,30 @@ export default function Page() {
           </AnimatedContainer>
         </MaxWidthWrapper>
       </AnimatedContainer>
+
+      {/* final section and footer*/}
+      <AnimatedContainer>
+        <LampContainer className="mt-32">
+          <div className="relative flex w-full flex-col items-center justify-center text-center">
+            <h2 className="mt-8 text-4xl font-semibold lg:text-5xl lg:leading-snug! xl:text-6xl">
+              Making content <br /> universally accessible
+            </h2>
+            <p className="mx-auto mt-6 max-w-md text-muted-foreground">
+              From Text to Speech to AI dubbing, our tools bridge language gaps,
+              restore voices to those who have lost them, and make digital
+              interactions feel more human, transforming the way we connect
+              online.
+            </p>
+            <Button className="mt-6" asChild>
+              <Link href="/sign-in">
+                Get started for free
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </LampContainer>
+      </AnimatedContainer>
+      <Footer />
     </>
   )
 }
