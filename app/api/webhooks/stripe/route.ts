@@ -57,7 +57,7 @@ export async function POST(request: Request) {
           stripeCustomerId: subscriptionCheck.customer as string,
           stripePriceId: subscriptionCheck.items.data[0]?.price.id,
           stripeCurrentPeriodEnd: new Date(
-            subscriptionCheck.current_period_end * 1000
+            (subscriptionCheck as any).current_period_end * 1000
           ),
         },
       })
@@ -77,7 +77,7 @@ export async function POST(request: Request) {
           status: subscription.status,
           stripePriceId: subscription.items.data[0]?.price.id,
           stripeCurrentPeriodEnd: new Date(
-            subscription.current_period_end * 1000
+            (subscription as any).current_period_end * 1000
           ),
         },
       })
