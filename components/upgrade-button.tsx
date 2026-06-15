@@ -11,11 +11,7 @@ export const UpgradeButton = () => {
   const handleCreateStripeSession = async () => {
     const { url, error } = await createStripeSession()
     if (error) {
-      toast({
-        title: "Error",
-        description: error,
-        variant: "destructive",
-      })
+      toast.error(error || "Something went wrong")
       return
     }
     window.location.href = url ?? "/app/billing"
