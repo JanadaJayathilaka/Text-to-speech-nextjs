@@ -257,7 +257,6 @@ export default function Page() {
           </div>
         </LampContainer>
       </AnimatedContainer>
-      <Footer />
     </>
   )
 }
